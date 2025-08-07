@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.0.1
+    hostname: zookeeper
+    container_name: zookeeper
+    env_file:
+      - .env.test    
+    ports:
+      - "${ZOOKEEPER_PORT}:2181"
+
+  kafka:
+    image: confluentinc/cp-kafka:7.0.1
+    hostname: kafka
+    container_name: kafka
+    ports:
+      - "${KAFKA_BROKER_PORT}:9092"
+      - "${KAFKA_EXTERNAL_PORT}:9093"
+    env_file:
+      - .env.test
+    depends_on:
+      - zookeeper

@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+  qdrant_db:
+    image: qdrant/qdrant
+    restart: always
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    networks:
+      network_n8n:
+        ipv4_address: 172.60.0.3
+
+  postgres_db:
+    image: postgres
+    restart: always
+    shm_size: 128mb
+    container_name: postgres_test
+    env_file:
+      - .env.test
+    volumes:
+      - db_data:/var/lib/postgresql/data/pgdata
+    networks:
+      network_n8n:
+        ipv4_address: 172.60.0.2
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    container_name: pgadmin_test
+    env_file:
+      - .env.test
+    ports:
+      - "8080:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - db
+    networks:
+      network_n8n:
+        ipv4_address: 172.60.0.4
+
+  n8n:    
+    image: docker.n8n.io/n8nio/n8n
+    container_name: n8n
+    restart: unless-stopped
+
+    ports:
+      - "5678:5678"
+
+    environment:
+      # - N8N_PROTOCOL=https
+      # - N8N_SSL_KEY=/etc/ssl/private/ssl.key
+      # - N8N_SSL_CERT=/etc/ssl/certs/ssl.cert
+
+      # - TZ=America/USA
+      # - N8N_BASIC_AUTH_ACTIVE=true
+      # - N8N_BASIC_AUTH_USER=n8n_user
+      # - N8N_BASIC_AUTH_PASSWORD=UJkhbyfuo231
+
+    volumes:
+      - n8n_data:/home/node/.n8n
+      # - ./certs/ssl.key:/etc/ssl/private/ssl.key:ro
+      # - ./certs/ssl.cert:/etc/ssl/certs/ssl.cert:ro      
+    networks:
+      network_n8n:
+        ipv4_address: 172.60.0.3
+
+networks:
+  network_n8n:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.60.0.0/24
+          gateway: 172.60.0.1
+
+volumes:
+  n8n_data:
+    driver: local

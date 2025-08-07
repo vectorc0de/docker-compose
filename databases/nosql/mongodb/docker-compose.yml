@@ -1,8 +1,10 @@
 version: '3.3' 
 services:  
-  mongodb:
+  mongoserver:
     image: mongo:latest 
-    container_name: dev_mongodb 
+    container_name: mongoserver
+    env_file:
+      - .env.test
     ports:
       - "27017:27017" 
     volumes:
@@ -11,11 +13,13 @@ services:
   
   mongo-express:
     image: mongo-express:latest 
-    container_name: dev_mongo_express 
+    container_name: mongoexpress
+    env_file:
+      - .env.test    
     ports:
       - "8081:8081"
     depends_on:
-      - mongodb 
+      - mongoserver
     restart: always 
 volumes:
   mongodb_data: 

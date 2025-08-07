@@ -1,0 +1,20 @@
+version: "3"
+services:
+  squid-alpine-ssl:
+    image: alatas/squid-alpine-ssl:r3
+    container_name: squid_proxy
+    ports:
+      - "88:3128"
+      - "86:4128"
+    volumes:
+      - ./log:/var/log/
+      - ./conf/squid.conf:/etc/squid/squid.conf
+      - ./cache:/var/cache
+      - ./cert:/etc/squid-cert
+    restart: always
+
+volumes:
+  log:
+  conf:
+  cache:
+  cert:
