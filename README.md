@@ -1,4 +1,4 @@
-# My docker-compose templates
+# My docker-compose templates (testing/nonprod)
 
 This repository houses a collection of Docker-based development environments and configurations for various services. It's designed to provide quick and isolated setups for different tech stacks.
 
@@ -32,9 +32,12 @@ Here's a breakdown of what you'll find in this repository:
   * **`./proxy`**: Proxy Services
 
       * **`./proxy/squid`**: Squid Proxy server configuration.
-          * `cert/`: Directory for SSL certificates.
-              * `CA.der`, `CA.pem`, `private.pem`: Certificate files for Squid SSL interception (if configured).
           * `docker-compose.yml`: Docker Compose file for the Squid proxy.
+
+  * **`./security`**: Security Tools
+
+      * **`./security/hashicorp_vault`**: HashiCorp Vault secrets management.
+          * `docker-compose.yml`: Docker Compose for HashiCorp Vault in dev mode.
 
 ## Getting Started
 

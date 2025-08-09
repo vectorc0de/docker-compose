@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  vault:
+    image: vault:latest
+    container_name: vault
+    ports:
+      - "8200:8200"
+    env_file:
+      - .env.test      
+    volumes:
+      - ./data:/vault/file
+      - ./config:/vault/config
+      - ./policies:/vault/policies
+      - ./logs:/vault/logs
+    cap_add:
+      - IPC_LOCK
+    command: server -dev -dev-root-token-id="root"
