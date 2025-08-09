@@ -1,13 +1,15 @@
-version: '3.8'
 services:
   zookeeper:
     image: confluentinc/cp-zookeeper:7.0.1
     hostname: zookeeper
     container_name: zookeeper
     env_file:
-      - .env.test    
+      - .env.test
     ports:
       - "${ZOOKEEPER_PORT}:2181"
+    networks:
+      network_kafka:
+        ipv4_address: 172.88.0.3
 
   kafka:
     image: confluentinc/cp-kafka:7.0.1
@@ -20,3 +22,28 @@ services:
       - .env.test
     depends_on:
       - zookeeper
+    networks:
+      network_kafka:
+        ipv4_address: 172.88.0.6    
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+    ports:
+      - "${KAFKA_UI_PORT}:8080"
+    restart: always
+    env_file:
+      - .env.test
+    depends_on:
+      - kafka
+    networks:
+      network_kafka:
+        ipv4_address: 172.88.0.4      
+
+networks:
+  network_kafka:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.88.0.0/24
+          gateway: 172.88.0.1      

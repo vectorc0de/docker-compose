@@ -28,6 +28,8 @@ Here's a breakdown of what you'll find in this repository:
       * **`./message_brokers/kafka`**: Apache Kafka with Zookeeper.
           * `docker-compose.yml`: Docker Compose for Kafka and Zookeeper.
           * `.env`: Environment variables for Kafka and Zookeeper ports.
+      * **`./message_brokers/rabbitmq`**: RabbitMQ message broker.
+          * `docker-compose.yml`: Docker Compose for RabbitMQ with management UI.
 
   * **`./proxy`**: Proxy Services
 
